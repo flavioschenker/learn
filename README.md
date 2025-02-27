@@ -19,7 +19,7 @@ Output:
 Start sorting from the **right** and fill n1 from the right by comparing the rightmost value of n1 and n2 with **pointers** p1 and p2. Decrease the corresponding pointer.
 #### **Solution code:**
 ```Python
-def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+def merge(nums1: List[int], m: int, nums2: List[int], n: int) -> None:
     p1 = m-1
     p2 = n-1
     r = m+n-1
@@ -48,7 +48,7 @@ Output:
 Simply iterate over n and use a **counter** c that only increases when value != s. Set the **next non s** to c.
 #### **Solution code:**
 ```Python
-def removeElement(self, nums: List[int], val: int) -> int:
+def removeElement(nums: List[int], val: int) -> int:
     c = 0
     for i in range(len(nums)):
         if nums[i] != val:
@@ -71,7 +71,7 @@ Output:
 Simply iterate over n and keep track of the **biggest encountered value** t. Use a **counter** c that only increases when n[i] > t. 
 #### **Solution code:**
 ```Python
-def removeDuplicates(self, nums: List[int]) -> int:
+def removeDuplicates(nums: List[int]) -> int:
     t = nums[0]
     c = 1
     for i in range(len(nums)):
@@ -80,4 +80,122 @@ def removeDuplicates(self, nums: List[int]) -> int:
             nums[c] = nums[i]
             c += 1
     return c
+```
+
+### 169. Majority Element
+#### **Problem**
+There is an array n.
+#### **Task**
+Find the majority element (most frequent element in the array) in O(n) time and O(1) space.
+#### **Example**
+Input:  
+n = [2,2,1,1,1,2,2]  
+Output:  
+2
+#### **Solution idea:**
+This solution uses the Boyer-Moore Voting Algorithm. The idea is to first set the first element in the array as majority and initiate a counting value c. Iterate over n and if there is a non majority element encountered decrease c otherwise increase it. The intuition is that only the majority element does not reach zero once in the iteration because it is present in more than 50% of the elements.
+#### **Solution code:**
+```Python
+def majorityElement(nums: List[int]) -> int:
+    major = nums[0]
+    c = 0
+    for num in nums:
+        if num == major:
+            c += 1
+        else:
+            c -= 1
+        
+        if c < 1:
+            major = num
+            c = 1
+    return major
+```
+
+## Medium Array Problems
+### 80. Remove Duplicates from Sorted Array 2
+#### **Problem**
+There is an non-decreasing array n.
+#### **Task**
+Remove duplicate values in n such that each value appears at most twice in-place. The relative order should be kept the same.
+#### **Example**
+Input:  
+n = [0,0,1,1,1,1,2,3,3]  
+Output:  
+7, [0,0,1,1,2,3,3]
+#### **Solution idea 1:**
+I iterate over n using **two pointers**, c and j, while keeping track of the largest encountered value in t. If num > t (a new number), I store it at position c and increment c. Otherwise, if num <= t, there is **still room** for a second occurrence, and pointer j ensures that at most two instances of the number are stored. If j<2, meaning there is still space for another occurrence, I also store num at c and increment c.
+#### **Solution code 1:**
+```Python
+def removeDuplicates(nums: List[int]) -> int:
+    c = 0
+    t = -10**5
+    j = 0
+
+    for num in nums:
+        if num > t:
+            j = 1
+            t = num
+            nums[c] = num
+            c += 1
+        else:
+            if j < 2:
+                nums[c] = num
+                c += 1
+                j += 1
+    return c
+```
+#### **Solution idea 2:**
+This is not my solution, but the slightly faster master solution from LeetCode. I iterate over n and store a pointer k=2. I only increase k when n[i] is a new number that differs from n[k-2]. Unlike in the easier version of the problem, I compare with position k-2 instead of k, because this allows for duplicates at k-1. By doing this, I ensure that I don't store a third element at k.
+#### **Solution code 2:**
+```Python
+def removeDuplicates(nums: List[int]) -> int:
+    k = 2
+    for i in range(2,len(nums)):
+        if nums[i] != nums[k-2]:
+            nums[k] = nums[i]
+            k += 1
+    return k
+```
+
+### 189. Rotate Array
+#### **Problem**
+There is an array n and an integer k.
+#### **Task**
+Rotate the array to the right by k steps.
+#### **Example**
+Input:  
+n = [1,2,3,4,5,6,7], k = 3
+Output:  
+[5,6,7,1,2,3,4]
+#### **Solution idea 1**
+Trivial solution pop the last element and insert it at the beginning k times. Bad time and space complexity.
+#### **Solution code 1:**
+```Python
+def rotate(nums: List[int], k: int) -> None:
+    for i in range(k):
+        o = nums.pop()
+        nums.insert(0, o)
+```
+#### **Solution idea 2**
+This solution relies on symmetry. Rotating an array is equivalent to reversing the entire array, then splitting it into two parts, left (first k elements) and right (remaining) and reversing each part individually. The initial reversal moves the first k elements to the end, but in reverse order, which is corrected by the second step. An edge case arises when k is greater than n, making the code ineffective. However, rotating an array of n elements by n results in the same array. Therefore, we only need to rotate it by k modulo n. For example, if k is 27 and n is 12, after 24 rotations (which form two full cycles), the array returns to its original state. This means only three additional rotations are needed.
+#### **Solution code 2:**
+```Python
+def rotate(nums: List[int], k: int) -> None:
+    n = len(nums)
+    k %= n
+    # reverse whole array
+    for i in range(n//2):
+        t = nums[i]
+        nums[i] = nums[n-i-1]
+        nums[n-i-1] = t
+    # reverse left
+    for i in range(k//2):
+        t = nums[i]
+        nums[i] = nums[k-i-1]
+        nums[k-i-1] = t
+    # reverse right
+    for i in range((n-k)//2):
+        t = nums[i+k]
+        nums[i+k] = nums[n-i-1]
+        nums[n-i-1] = t
 ```

@@ -309,3 +309,102 @@ def isPalindrome(s: str) -> bool:
         r -= 1
     return True
 ```
+
+### 🧩 392. Is Subsequence
+#### **Problem**
+There are two strings s and t. s is a subsequence of t if s is formed of t by deleting some or none of the characters of t without disturbing the relative order.
+#### **Task**
+Return true if s is a subsequent of t, otherwise false.
+#### **Example**
+Input:  
+s = "abc", t = "ahbgdc"  
+Output:  
+true
+#### **Solution idea**
+Loop over all characters of s and try to find the character using two pointers. If found increase p1. In each round increase p2. If at some point p2 reaches it's end before all characters of s are checked, return false. Otherwise true.
+#### **Solution code:**
+```Python
+def isSubsequence(s: str, t: str) -> bool:
+    p1 = 0
+    p2 = 0
+    while p1 < len(s):
+        if p2 >= len(t):
+            return False
+        if s[p1] == t[p2]:
+            p1 += 1
+        p2 += 1
+    return True
+```
+
+## Medium Two Pointers Problems
+### 🧩 167. Two Sum 2 - Input Array Is Sorted
+#### **Problem**
+There is a non-decreasing array n with integer values and a target integer t.
+#### **Task**
+Find two values such that they add up to the target t and return their indices. There is exactly one solution. The two indices should not be the same.
+#### **Example**
+Input:  
+n = [2,7,11,15], t = 9  
+Output:  
+[1,2]
+#### **Solution idea 1**
+Trivial solution: loop over array twice. Constant space but very very bad time complexity O(n^2). Fails submission anyways, due to timeout.
+#### **Solution code 1**
+```Python
+def twoSum(numbers: List[int], target: int) -> List[int]:
+    n = len(numbers)
+    for i in range(n):
+        for j in range(n):
+            if i == j: continue
+            if numbers[i] + numbers[j] == target:
+                return [i+1,j+1]     
+```
+#### **Solution idea 2**
+This solution runs in O(n) and has constant space complexity O(1). The idea is to use two pointers left and right. When the sum of the two pointers is greater then t, decrement the right pointer. If too small, increment the left pointer. This works because the array is sorted.
+#### **Solution code 2**
+```Python
+def twoSum(numbers: List[int], target: int) -> List[int]:
+    l = 0
+    r = len(numbers)-1
+    while l < r:
+        if numbers[l] + numbers[r] == target:
+            return [l+1,r+1]
+        elif numbers[l] + numbers[r] > target:
+            r -= 1
+        else:
+            l += 1    
+```
+
+### 🧩 11. Container With Most Water
+#### **Problem**
+There is an array h with n elements that contain wall height values.
+#### **Task**
+Find the best wall pair that holds the most amount of water by forming a container with the x axis (indices apart).
+#### **Example**
+Input:  
+h = [1,8,6,2,5,4,8,3,7]
+Output:  
+49
+#### **Solution idea**
+The trivial approach is to compare each wall with every other wall, but this results in a time complexity of O(n^2). Instead, we can use a more efficient scanning method that optimizes for the best wall pair. This can be achieved with two pointers, one starting from the left and the other from the right. We move the pointer pointing to the shorter wall inward since a taller wall has the potential to hold more water. We systematically identify the best wall pairs while scanning efficiently. This approach ensures that we find the optimal water levels in a much more efficient manner, as we naturally converge on the tallest wall pair in the array.
+#### **Solution code**
+```Python
+def maxArea(height: List[int]) -> int:
+    n = len(height)
+    l = 0
+    r = n-1
+    w = 0
+    while l < r:
+        h_l = height[l]
+        h_r = height[r]
+        x = r-l
+        if h_l < h_r:
+            t = h_l*x
+            l += 1
+        else:
+            t = h_r*x
+            r -= 1
+        if t > w:
+            w = t
+    return w
+```

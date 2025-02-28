@@ -4,8 +4,19 @@ This is my personal repository and cheatsheet for learning statistics, algorithm
 
 # 👨‍💻 Leetcode problems
 Below is a summary of the LeetCode problems I have solved.
+
+My Roadmap:
+1) Arrays ✅
+2) Stack 🚧
+3) Two Pointers
+4) Binary Search
+5) Sliding Window
+6) Linked List
+7) Trees
+8) Heaps / Queues
+9) Backtracking
 ## Easy Array Problems
-### 88. Merge Sorted Array
+### 🧩 88. Merge Sorted Array
 #### **Problem**
 There are two non-decreasing integer lists n1, n2. n1 has m and n2 k non-zero elements. n1 is padded with zeros so it is of length n+m.
 #### **Task**
@@ -18,6 +29,7 @@ Output:
 #### **Solution idea:**
 Start sorting from the **right** and fill n1 from the right by comparing the rightmost value of n1 and n2 with **pointers** p1 and p2. Decrease the corresponding pointer.
 #### **Solution code:**
+Python3
 ```Python
 def merge(nums1: List[int], m: int, nums2: List[int], n: int) -> None:
     p1 = m-1
@@ -33,8 +45,26 @@ def merge(nums1: List[int], m: int, nums2: List[int], n: int) -> None:
             p2 -= 1
         r -= 1
 ```
+C++
+```cpp
+void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+    int p1 = m-1;
+    int p2 = n-1;
+    int r = n+m-1;
+    while (p2 >= 0) {
+        if (p1 >= 0 && nums1[p1] >= nums2[p2])  {
+            nums1[r] = nums1[p1];
+            p1--;
+        } else {
+            nums1[r] = nums2[p2];
+            p2--;
+        }
+        r--;
+    }
+}
+```
 
-### 27. Remove Element
+### 🧩 27. Remove Element
 #### **Problem**
 There is an integer s and an array of integers n.
 #### **Task**
@@ -57,7 +87,7 @@ def removeElement(nums: List[int], val: int) -> int:
     return c
 ```
 
-### 27. Remove Duplicates from Sorted Array
+### 🧩 26. Remove Duplicates from Sorted Array
 #### **Problem**
 There is an non-decreasing array n.
 #### **Task**
@@ -82,7 +112,7 @@ def removeDuplicates(nums: List[int]) -> int:
     return c
 ```
 
-### 169. Majority Element
+### 🧩 169. Majority Element
 #### **Problem**
 There is an array n.
 #### **Task**
@@ -111,8 +141,36 @@ def majorityElement(nums: List[int]) -> int:
     return major
 ```
 
+### 🧩 121. Best Time to Buy and Sell Stock
+#### **Problem**
+There is a price array n.
+#### **Task**
+Find the best possible profit by finding the best entry and exit point/value in the array and return the maximum profit.
+#### **Example**
+Input:  
+n = [7,1,5,3,6,4]  
+Output:  
+5
+#### **Solution idea:**
+This solution calculates the profit p in every step, relative to the current entry price l. When the profit falls below zero, a new entry l is set. The best ever profit m is also stored.
+#### **Solution code:**
+```Python
+def maxProfit(prices: List[int]) -> int:
+    p = 0 # current profit
+    m = 0 # best profit
+    l = 10**4 # current low
+    for price in prices:
+        p = price - l
+        if p <= 0:
+            l = price
+        if p > m:
+            m = p
+    return m
+```
+
+
 ## Medium Array Problems
-### 80. Remove Duplicates from Sorted Array 2
+### 🧩 80. Remove Duplicates from Sorted Array 2
 #### **Problem**
 There is an non-decreasing array n.
 #### **Task**
@@ -157,7 +215,7 @@ def removeDuplicates(nums: List[int]) -> int:
     return k
 ```
 
-### 189. Rotate Array
+### 🧩 189. Rotate Array
 #### **Problem**
 There is an array n and an integer k.
 #### **Task**
@@ -198,4 +256,56 @@ def rotate(nums: List[int], k: int) -> None:
         t = nums[i+k]
         nums[i+k] = nums[n-i-1]
         nums[n-i-1] = t
+```
+
+### 🧩 122. Best Time to Buy and Sell Stock 2
+#### **Problem**
+There is a price array n.
+#### **Task**
+Find the best possible profit. You can hold maximum of 1 position. You can enter and exit anytime.
+#### **Example**
+Input:  
+n = [7,1,5,3,6,4]  
+Output:  
+7
+#### **Solution idea**
+Just keep track of the price delta on each day. Begin on the second day and if the delta is positive just add it to the profit.
+#### **Solution code:**
+```Python
+def maxProfit(prices: List[int]) -> int:
+    p = 0
+    for i in range(1,len(prices)):
+        delta = prices[i] - prices[i-1]
+        if delta > 0:
+            p += delta
+    return p
+```
+
+## Easy Two Pointers Problems
+### 🧩 125. Valid Palindrome
+#### **Problem**
+There is a string of ASCII characters s.
+#### **Task**
+Filter s to only alphabetical characters a-Z and numbers and set all lowercase.  
+Check if the filtered string is a palindrome.
+#### **Example**
+Input:  
+s = "A man, a plan, a canal: Panama"  
+f = "amanaplanacanalpanama"  
+Output:  
+true
+#### **Solution idea**
+First loop once over the string O(n) to filter it with standard Python methods. Then use two pointers l and r to traverse it from left and right symmetricaly O(n). As soon as the first non-equal characters are found return false, if nothing found return true.
+#### **Solution code:**
+```Python
+def isPalindrome(s: str) -> bool:
+    f = ''.join([char.lower() for char in s if char.isalnum()]) # O(n)
+    l = 0
+    r = len(f)-1
+    while l<r: # O(n)
+        if f[l] != f[r]:
+            return False
+        l += 1
+        r -= 1
+    return True
 ```

@@ -408,3 +408,44 @@ def maxArea(height: List[int]) -> int:
             w = t
     return w
 ```
+
+## Easy Linked List Problems
+### 🧩 141. Linked List Cycle
+#### **Problem**
+There is the header h of a one-directional linked list.
+#### **Task**
+Return true if the ll contains a cycle, false otherwise.
+#### **Example**
+Input:  
+head = [3,2,0,-4,2,0,-4,...]  
+Output:  
+true
+#### **Solution idea 1**
+Trivial solution: Store the memory of each encountered node in a hashmap. As soon as a dublicate is found return true. O(n) space complexity.
+#### **Solution code 1**
+```Python
+    def hasCycle(head: Optional[ListNode]) -> bool:
+        if head is None:
+            return False
+        check = {}
+        while head.next is not None:
+            if id(head) in check:
+                return True
+            else:
+                check[id(head)] = 1
+            head = head.next
+        return False   
+```
+#### **Solution idea 2**
+Use the Tortoise and Hare algorithm: Initiate two pointers, one moving slowly (one step at a time) and one moving fast (two steps at a time). If the linked list has no cycle, the fast pointer will reach the end, and the two pointers will never meet. However, if there is a cycle, the fast pointer will eventually catch up to the slow pointer, confirming the presence of a cycle.
+#### **Solution code 2**
+```Python
+    def hasCycle(head: Optional[ListNode]) -> bool:
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        return False
+```

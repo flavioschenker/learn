@@ -5,17 +5,32 @@ This is my personal repository and cheatsheet for learning statistics, algorithm
 # 👨‍💻 Leetcode problems
 Below is a summary of the LeetCode problems I have solved.
 
+## Roadmap
 My Roadmap:
-1) Arrays ✅
-2) Stack 🚧
-3) Two Pointers
-4) Binary Search
+
+1) Array & String ✅
+2) Stack ✅
+3) Two Pointers ✅
+4) Binary Search 🚧
 5) Sliding Window
 6) Linked List
 7) Trees
 8) Heaps / Queues
 9) Backtracking
-## Easy Array Problems
+
+## Summary
+|Problem|Solution
+|---|---|
+|cyclic shift an array      |flip two times with two pointer|
+|find a loop in linked-list |tortoise and hare algorithm|
+|merge sorted array         |pointer from right|
+|find majority element      |boyer-moore algorithm|
+|find best profit           |drag entry down if profit<0|
+|find common prefix         |sort and compare only first and last|
+|optimize walls/pairs       |two pointer, reduce weaker pointer|
+
+
+## Easy Array & String Problems
 ### 🧩 88. Merge Sorted Array
 #### **Problem**
 There are two non-decreasing integer lists n1, n2. n1 has m and n2 k non-zero elements. n1 is padded with zeros so it is of length n+m.
@@ -141,6 +156,7 @@ def majorityElement(nums: List[int]) -> int:
     return major
 ```
 
+
 ### 🧩 121. Best Time to Buy and Sell Stock
 #### **Problem**
 There is a price array n.
@@ -169,7 +185,62 @@ def maxProfit(prices: List[int]) -> int:
 ```
 
 
-## Medium Array Problems
+### 🧩 58. Length of Last Word
+#### **Problem**
+There is a string s consisting of words and spaces.
+#### **Task**
+Find the length of the last word.
+#### **Example**
+Input:  
+s = "Hello World"    
+Output:  
+5
+#### **Solution idea:**
+Start iteration from right and begin count as soon as first non-space character is encountered until a space is found.
+#### **Solution code:**
+```Python
+def lengthOfLastWord(s: str) -> int:
+    n = len(s)-1
+    count = 0
+    start = False
+    for i in range(n, -1, -1):
+        if s[i] == " " and start:
+            return count
+        if s[i] != " ":
+            start = True
+            count += 1
+    return count
+```
+
+
+### 🧩 14. Longest Common Prefix
+#### **Problem**
+There is an array of strings s.
+#### **Task**
+Find the longest common prefix.
+#### **Example**
+Input:  
+s = ["flower","flow","flight"]  
+Output:  
+"fl"  
+#### **Solution idea:**
+First sort array alphabetical and then compare **only the first and last** element.
+#### **Solution code:**
+```Python
+def longestCommonPrefix(strs: List[str]) -> str:
+    strs = sorted(strs) # nlogn
+    l = strs[0]
+    r = strs[-1]
+    a = ""
+    for i in range(min(len(l),len(r))):
+        if l[i] != r[i]:
+            return a
+        a += l[i]
+    return a
+```
+
+
+## Medium Array & String Problems
 ### 🧩 80. Remove Duplicates from Sorted Array 2
 #### **Problem**
 There is an non-decreasing array n.

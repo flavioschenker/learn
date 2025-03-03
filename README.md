@@ -17,6 +17,7 @@ My Roadmap:
 7) Trees
 8) Heaps / Queues
 9) Backtracking
+10) Tries
 
 ## Summary
 |Problem|Solution

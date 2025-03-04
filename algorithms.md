@@ -65,3 +65,8 @@ def hasCycle(head: ListNode) -> bool:
     return False
 ```
 
+## 🛷🪟 Sliding Window
+
+## 🗳️ Boyer-Moore Majority Voting
+## 🌳🔽➡️ Depth First Search (DFS)
+## 🌳➡️🔽 Breadth First Search (BFS)

@@ -543,10 +543,65 @@ def threeSum(nums: List[int]) -> List[List[int]]:
 
 
 ## Easy Stack Problems
+### 🧩 20. Valid Parentheses
+#### **Problem**
+There is a string s containing parentheses '(', ')', '{', '}', '[', ']'
+#### **Task**
+Determin if the input string is valid. It is valid when brackets of the same type are closed in the correct order.
+#### **Example**
+Input:  
+s = "()[]{()}"  
+Output:  
+true
+#### **Solution idea**
+Create a match map of closing brackets and a stack.
+If it's an opening bracket push it on the stack. If closing bracket pop it from the stack and compare with match to verify the right type of bracket.
+#### **Solution code**
+```Python
+def isValid(s: str) -> bool:
+    stack = []
+    match = {
+        ")": "(",
+        "]": "[",
+        "}": "{"
+    }
+    for b in s:
+        if b in match:
+            if not stack or match[b] != stack.pop():
+                return False
+        else:
+            stack.append(b)
+    return not stack 
+```
 
 
-
-
+## Medium Stack Problems
+### 🧩 71. Simplify Path
+#### **Problem**
+There is a path string p containing a path.
+#### **Task**
+Return the simplified canonical path. A canonical path begins with a '/' and treats consecutive slashes such as '///' as '/'. Double dots '..' denotes the parent and single dot '.' the current directory. Everything else is a directory or file name.
+#### **Example**
+Input:  
+p = "/home/user///Documents/../Pictures"
+Output:  
+"/home/user/Pictures"
+#### **Solution idea**
+Create a stack and split the path by '/'. Iterate trough the resulting array path. If a '..' is encountered pop from the stack, ignore '' and '.'. Push the rest on the stack. At the end join everything together in the stack with '/'.
+#### **Solution code**
+```Python
+def simplifyPath(path: str) -> str:
+    stack = []
+    path = path.split("/")
+    for c in path:
+        if c == "..":
+            if stack: stack.pop()
+        elif c == "" or c == ".":
+            continue
+        else:
+            stack.append(c)
+    return "/" + "/".join(stack)
+```
 
 
 

@@ -471,7 +471,7 @@ There is an array h with n elements that contain wall height values.
 Find the best wall pair that holds the most amount of water by forming a container with the x axis (indices apart).
 #### **Example**
 Input:  
-h = [1,8,6,2,5,4,8,3,7]
+h = [1,8,6,2,5,4,8,3,7]  
 Output:  
 49
 #### **Solution idea**
@@ -583,7 +583,7 @@ There is a path string p containing a path.
 Return the simplified canonical path. A canonical path begins with a '/' and treats consecutive slashes such as '///' as '/'. Double dots '..' denotes the parent and single dot '.' the current directory. Everything else is a directory or file name.
 #### **Example**
 Input:  
-p = "/home/user///Documents/../Pictures"
+p = "/home/user///Documents/../Pictures"  
 Output:  
 "/home/user/Pictures"
 #### **Solution idea**
@@ -604,13 +604,132 @@ def simplifyPath(path: str) -> str:
 ```
 
 
+### 🧩 155. Min Stack
+#### **Problem**
+There is a blueprint class MinStack.
+#### **Task**
+Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+#### **Example**
+Input:  
+["MinStack","push","push","push","getMin","pop","top","getMin"]
+[[],[-2],[0],[-3],[],[],[],[]]  
+Output:  
+[null,null,null,null,-3,null,0,-2]
+#### **Solution idea**
+The idea is to **not use a single stack** and a min value but a **double stack** with the actual value and the current minValue per layer. With this implementation if an element is poped that was the minValue, the new minValue does not need to be calculated again, since the current minValue is already on top of the stack.
+#### **Solution code**
+```Python
+class MinStack:
+    def __init__(self):
+        self.stack = []
+    def push(self, val: int) -> None:
+        min_val = self.getMin()
+        if min_val == None or min_val > val:
+            min_val = val
+        self.stack.append([val, min_val])
+    def pop(self) -> None:
+        self.stack.pop()
+    def top(self) -> int:
+        if self.stack:
+            return self.stack[-1][0]
+        else:
+            return None
+    def getMin(self) -> int:
+        if self.stack:
+            return self.stack[-1][1]
+        else:
+            return None
+```
 
 
+### 🧩 150. Evaluate Reverse Polish Notation
+#### **Problem**
+There is an array of strings t with values '+', '-', '*', '/' and string numbers in Reverse Polish Notation.
+#### **Task**
+Calculate the expression and return the result as an integer.
+#### **Example**
+Input:  
+t = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]  
+Output:  
+22
+#### **Solution idea**
+Use a stack and iterate from the left. If a number is encountered push it onto the stack. If an operater is encountered pop the last two elements from the stack, solve the operater and push it back unto the stack.
+#### **Solution code**
+```Python
+def evalRPN(tokens: List[str]) -> int:
+    stack = []
+    for token in tokens:
+        if token in ["+","-","*","/"]:
+            r = stack.pop()
+            l = stack.pop()
+            if token == "+":
+                t = l + r
+            if token == "-":
+                t = l - r
+            if token == "*":
+                t = l*r
+            if token == "/":
+                t = int(l/r)
+            stack.append(t)
+        else:
+            stack.append(int(token))
+    return stack.pop()
+```
 
 
+## Hard Stack Problems
+### 🧩 224. Basic Calculator
+#### **Problem**
+There is a string s representing a valid expression with values '+','-','(',')',' ' and numbers.
+#### **Task**
+Implement a calculater that solves the expression without built-in functions.
+#### **Example**
+Input:  
+s = "(1+(4+5+2)-3)+(6+8)"  
+Output:  
+23
+#### **Solution idea**
+Break the problem into smaller problems with recursion. Iterate from left, if a '(' is encountered start a new sub problem with recursion. The recusrion returns the expression solved and an offset where the closing bracket ')' was, such that the main loop can continue after the ')'. Since the operator comes before the number, whenever we encounter an operator **we need to handle the current number and update the sign for the subsequent number**. We can track the current number by updating with base 10. Handling the current number means appending the number with the right sign to the stack.
+#### **Solution code**
+```Python
+def calculate(s: str) -> int:
+    n = len(s)
 
+    def recursion(i):
+        def update(sign, num):
+            if sign == "+": stack.append(num)
+            if sign == "-": stack.append(-num)
+        num = 0
+        stack = []
+        sign = "+"
+        while i < n:
+            c = s[i]
+            if c == " ":
+                pass
+            elif c == "(":
+                num, offset = recursion(i+1)
+                i = offset
+            elif c == "+":
+                update(sign, num)
+                sign = "+"
+                num = 0
+            elif c == "-":
+                update(sign, num)
+                sign = "-"
+                num = 0
+            elif c == ")":
+                update(sign, num)
+                return sum(stack), i
+            else:
+                num = num*10 + int(c)
+            i += 1
 
+        update(sign, num)
+        return sum(stack), i
 
+    res,i = recursion(0)
+    return res
+```
 
 
 

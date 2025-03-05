@@ -9,15 +9,19 @@ Below is a summary of the LeetCode problems I have solved.
 My Roadmap:
 
 1) Array & String ✅
-2) Stack ✅
+2) Hashmap 🚧
 3) Two Pointers ✅
-4) Binary Search 🚧
-5) Sliding Window
-6) Linked List
-7) Trees
-8) Heaps / Queues
+4) Stack ✅
+5) Binary Search 🚧
+6) Sliding Window
+7) Linked List
+8) Trees
 9) Backtracking
-10) Tries
+10) Graphs
+11) Tries
+12) Heaps / Queues
+13) Intervals
+
 
 ## Summary
 |Problem|Solution
@@ -80,6 +84,7 @@ void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
 }
 ```
 
+
 ### 🧩 27. Remove Element
 #### **Problem**
 There is an integer s and an array of integers n.
@@ -102,6 +107,7 @@ def removeElement(nums: List[int], val: int) -> int:
             c += 1
     return c
 ```
+
 
 ### 🧩 26. Remove Duplicates from Sorted Array
 #### **Problem**
@@ -127,6 +133,7 @@ def removeDuplicates(nums: List[int]) -> int:
             c += 1
     return c
 ```
+
 
 ### 🧩 169. Majority Element
 #### **Problem**
@@ -287,6 +294,7 @@ def removeDuplicates(nums: List[int]) -> int:
     return k
 ```
 
+
 ### 🧩 189. Rotate Array
 #### **Problem**
 There is an array n and an integer k.
@@ -330,6 +338,7 @@ def rotate(nums: List[int], k: int) -> None:
         nums[n-i-1] = t
 ```
 
+
 ### 🧩 122. Best Time to Buy and Sell Stock 2
 #### **Problem**
 There is a price array n.
@@ -352,6 +361,11 @@ def maxProfit(prices: List[int]) -> int:
             p += delta
     return p
 ```
+
+
+## Easy Hashmap Problems
+## Medium Hashmap Problems
+
 
 ## Easy Two Pointers Problems
 ### 🧩 125. Valid Palindrome
@@ -382,6 +396,7 @@ def isPalindrome(s: str) -> bool:
     return True
 ```
 
+
 ### 🧩 392. Is Subsequence
 #### **Problem**
 There are two strings s and t. s is a subsequence of t if s is formed of t by deleting some or none of the characters of t without disturbing the relative order.
@@ -407,6 +422,7 @@ def isSubsequence(s: str, t: str) -> bool:
         p2 += 1
     return True
 ```
+
 
 ## Medium Two Pointers Problems
 ### 🧩 167. Two Sum 2 - Input Array Is Sorted
@@ -447,6 +463,7 @@ def twoSum(numbers: List[int], target: int) -> List[int]:
             l += 1    
 ```
 
+
 ### 🧩 11. Container With Most Water
 #### **Problem**
 There is an array h with n elements that contain wall height values.
@@ -480,6 +497,67 @@ def maxArea(height: List[int]) -> int:
             w = t
     return w
 ```
+
+
+### 🧩 15. 3Sum
+#### **Problem**
+There is an array h containing n integers.
+#### **Task**
+Find all the triplets that sum to 0 such that they are all different indices.
+#### **Example**
+Input:  
+h = [-1,0,1,2,-1,-4]  
+Output:  
+[[-1,-1,2],[-1,0,1]]
+#### **Solution idea**
+First sort the array than fix one number and consider the problem as a two sum problem.
+Two sum: start left and right with two pointers, if sum is bigger reduce right, if smaller increase left.
+O(nlogn) sort, O(n) fixed loop and O(n) two sum problem, thus the overall problem is O(n^2) time.
+#### **Solution code**
+```Python
+def threeSum(nums: List[int]) -> List[List[int]]:
+    nums = sorted(nums)
+    n = len(nums)
+    result = []
+    for i in range(n): # O(n^2) time, O(1) space
+        if i > 0 and nums[i] == nums[i-1]:
+            continue
+        z = nums[i]
+        l = i+1
+        r = n-1
+        while l<r:
+            x = nums[l]
+            y = nums[r]
+            s = x + y + z
+            if s > 0:
+                r -= 1
+            elif s < 0:
+                l += 1
+            else:
+                result.append([x,y,z])
+                l += 1
+                while nums[l] == nums[l-1] and l<r:
+                    l += 1
+    return result
+```
+
+
+## Easy Stack Problems
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Easy Linked List Problems
 ### 🧩 141. Linked List Cycle

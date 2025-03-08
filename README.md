@@ -7,13 +7,13 @@ Below is a summary of the LeetCode problems I have solved.
 
 ## Roadmap
 My Roadmap:
-
+28 / 150
 1) Array & String ✅
 2) Hashmap 🚧
 3) Two Pointers ✅
 4) Stack ✅
 5) Binary Search 🚧
-6) Sliding Window
+6) Sliding Window 🚧
 7) Linked List
 8) Trees
 9) Backtracking
